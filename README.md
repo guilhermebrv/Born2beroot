@@ -190,7 +190,7 @@ Var-log is used to store our logs, which are files that are used to keep track o
 	* For `LV srv`, `#1 3GB` -> `Use as` -> `Ext4` -> `Mount point` -> `/srv` -> `Done`
 	* For `LV tmp`, `#1 3GB` -> `Use as` -> `Ext4` -> `Mount point` -> `/tmp` -> `Done`
 	* For `LV var`, `#1 3GB` -> `Use as` -> `Ext4` -> `Mount point` -> `/var` -> `Done`
-	* For `LV var-log`, #1 4GB -> Use as -> `Ext4` -> `Mount point` -> `/var/log` (entered manually) -> `Done`
+	* For `LV var-log`, `#1 4GB` -> `Use as` -> `Ext4` -> `Mount point` -> `/var/log` (entered manually) -> `Done`
   
 32. To be done with it, we go to `Finish partioning and write changes to disk` and select `Yes`;
 
@@ -223,12 +223,12 @@ Var-log is used to store our logs, which are files that are used to keep track o
 
 2. Next we login as root in order to install vim;
 ```
-su -  or  * su root
+su root
 ```
 
 3. We then install `vim`, which is a text editor;
 ```
-sudo apt-get install vim
+apt-get install vim -y
 ```
 
 
@@ -283,8 +283,7 @@ sudo vi /etc/ssh/sshd_config
  
 4. On the same file edition, we edit (then save and exit):
 ```
-"#PermitRootLogin prohibit-password"
-"PermitRootLogin no"
+"#PermitRootLogin prohibit-password" -> "PermitRootLogin no"
 ```
 
 5. Then we go to `VM` -> `Settings` -> `Network` -> `Adapter 1` -> `Advanced` -> `Port Forwarding`, and add a rule for `host port 4242` and` guest port 4242`
@@ -444,6 +443,19 @@ wall "
 #Network: IP $ipv4_address($mac_address)
 #Sudo: $sudo_commands_count cmd"
 ```
+```
+$architecture -> prints the name, version and more details about our machine and our OS (the architecture of the operating system and its kernel version)
+$physical_cpu -> lists our CPUs (physical processors)
+$virtual_cpu -> shows how many virtual processors we have (if we have multi-core processors)
+$memory_usage -> shows the available RAM on our server and its utilization %
+$last_boot -> the date and time of the last reboot
+$lvm_is_used -> whether LVM is active or not
+$tcp_connections -> the number of active connections
+$users_logged_in -> the number of users using the server
+$ipv4_address -> the IPv4 address of your server
+$mac_address -> the MAC address (associated with the network adapter)
+$sudo_commands_count -> the number of commands executed with the sudo program
+```
 
 ```
 sudo chmod 777 /home/monitoring.sh // making it executable
@@ -457,12 +469,12 @@ sudo visudo
 ```
 "username ALL=(root) NOPASSWD: /usr/local/bin/monitoring.sh"
 ```
-*	Also, after the line `root ALL=(ALL:ALL) ALL`, we also need to include: 
+* Also, after the line `root ALL=(ALL:ALL) ALL`, we also need to include: 
 ```
 "username ALL=(ALL:ALL) ALL"
 ```
 
-*	Next, we exit and save the file.
+* Next, we exit and save the file.
 ```
 sudo reboot
 ```
