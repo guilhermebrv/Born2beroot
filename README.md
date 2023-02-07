@@ -1,72 +1,76 @@
 # Born2beroot - /42 Lisboa/
 
+## Table of contents :
+
+- [Installing and acessing the VM](#installing-and-acessing-the-vm)
+- [Starting and configuring our VM](#starting-and-configuring-our-vm)
+	- [Installing sudo](#installing-sudo)
+	- [Setting up SSH service](#setting-up-ssh-service)
+	- [Setting up UFW](#setting-up-ufw)
+	- [Setting more things up on sudo](#setting-more-things-up-on-sudo)
+	- [Password policy](#password-policy)
+	- [Configuring the network adapter](#configuring-the-network-adapter)
+	- [Setting up cron](#setting-up-cron)
+- [For the BONUS PART](#for-the-bonus-part)
+- [Final touches](#final-touches)
+- [Before finishing your project](#before-finishing-your-project)
+- [For the evaluation](#for-the-evaluation)
+- [Here's more info on the subject](#heres-more-info-on-the-subject)
+
 ## Regarding the project:
 
 ### 1. Why should I use a Virtual Machine?
-
+	
 A virtual machine is a software emulation of a computer operating system, that allows you to run on a host machine multiple OS simultaneously on the same computer. 
-Since each VM has its own operating system and functions separately, you can have more than one VM per machine. They are used to test out new software without affecting
-your current system, in a safe, separate environment. That way we also eliminate the need for multiple physical configurations of hardware, which can be costly to maintain 
-and take up space. 
+
+Since each VM has its own operating system and functions separately, you can have more than one VM per machine. They are used to test out new software without affecting your current system, in a safe, separate environment. That way we also eliminate the need for multiple physical configurations of hardware, which can be costly to maintain and take up space. 
 
 
 ### 2. Why did I choose Debian?
 
-Besides being easier to install, when a new version is launched, updating Debian is much simpler compared to CentOS. Debian offers a user-friendly experience
-and supports a wide range of libraries, filesystems, and architecture, as well as providing more customization options. That means Debian is so much better 
-when we are talking about personal servers. On the other hand, for larger businesses, CentOS provides more features and unparalleled support for Enterprise software.
+Besides being easier to install, when a new version is launched, updating Debian is much simpler compared to CentOS. Debian offers a user-friendly experience and supports a wide range of libraries, filesystems, and architecture, as well as providing more customization options. 
+
+That means Debian is so much better when we are talking about personal servers. On the other hand, for larger businesses, CentOS provides more features and unparalleled support for Enterprise software.
 
 
 ### 3. What are the differences between APT and aptitude?
 
-Both APT (Advanced Packaging Tool) and aptitude are tools for package management, used for searching, removing, and installing packages. However, they have different 
-proposals.
+Both APT (Advanced Packaging Tool) and aptitude are tools for package management, used for searching, removing, and installing packages. However, they have different proposals.
 
-Created for Debian, APT is an open-source tool that handles software installation and removal, working with the RPM Package Manager. In the command-line, it includes 
-apt, apt-get, and apt-cache. Advanced Packaging Tool searches in a list of cached packages, listing the dependencies that need to be installed or updated; next, it can
-automatically download, configure, and install these dependencies. 
+Created for Debian, APT is an open-source tool that handles software installation and removal, working with the RPM Package Manager. In the command-line, it includes apt, apt-get, and apt-cache. Advanced Packaging Tool searches in a list of cached packages, listing the dependencies that need to be installed or updated; next, it can automatically download, configure, and install these dependencies. 
 
-Using apt, you can syncronize the package file with its source (by using command update), install the most recent versions of these packages that are already installed
-on your system from the sources list (using command upgrade) and also, in addition to update, it can handle dependencies with new package versions (with commands full-upgrade (apt)
- y dist-upgrade (apt-get)).
+Using apt, you can syncronize the package file with its source (by using command update), install the most recent versions of these packages that are already installed on your system from the sources list (using command upgrade) and also, in addition to update, it can handle dependencies with new package versions (with commands full-upgrade (apt) y dist-upgrade (apt-get)).
 
-On the other hand, aptitude is an interface created for APT that can show a list of software packages, allowing the user to choose which to install or remove. That being
-said, it has a more flexible manner of searching the packages, making it easier to understand dependencies between the packages. To use aptitude via command terminal, 
-just like apt-get, the user must log in as super-user / use the sudo command.
+On the other hand, aptitude is an interface created for APT that can show a list of software packages, allowing the user to choose which to install or remove. That being said, it has a more flexible manner of searching the packages, making it easier to understand dependencies between the packages. To use aptitude via command terminal, just like apt-get, the user must log in as super-user / use the sudo command.
 
-The most important difference between one and the other, is that aptitude is a high-level package manager, while APT is a lower-level package manager. Overall, aptitude has more 
-integrated functionalities, which includes apt-mark and apt-cache, and handles even more tasks than apt.
+The most important difference between one and the other, is that aptitude is a high-level package manager, while APT is a lower-level package manager. Overall, aptitude has more integrated functionalities, which includes apt-mark and apt-cache, and handles even more tasks than apt.
 
 
 ### 4. What is AppArmor?
 
-AppArmor is a Linux kernel security module, that comes with Debian, that restricts applications to a limited set of resources. It provides a mandatory access control (MAC) system that allows 
-administrators to have more control, as it is possible for them to restrict the access of certain applications to the system. 
+AppArmor is a Linux kernel security module, that comes with Debian, that restricts applications to a limited set of resources. It provides a mandatory access control (MAC) system that allows administrators to have more control, as it is possible for them to restrict the access of certain applications to the system. 
+
+We can scheck its status by running:
+```
+sudo aa-status
+```
 
 ### 5. What is SSH?
 
-"The Secure Shell (SSH) is a secure manner of connecting to a remote machine. It utilizes encryption to protect all communication between the client and the host, allowing users to access their servers
-more safely. This protocol is supported on Mac and Linux systems and can be accessed via the terminal. Unlike other remote communication methods, SSH encrypts the entire session, making it impossible for 
-unauthorized parties to intercept sensitive information. By using the SSH protocol, security concerns are significantly reduced. Encryption enhances the security of both the client and server, and as a result,
-passwords, client access data, and any other sensitive information are protected from unauthorized access."
+"The Secure Shell (SSH) is a secure manner of connecting to a remote machine. It utilizes encryption to protect all communication between the client and the host, allowing users to access their servers more safely. This protocol is supported on Mac and Linux systems and can be accessed via the terminal. Unlike other remote communication methods, SSH encrypts the entire session, making it impossible for unauthorized parties to intercept sensitive information. By using the SSH protocol, security concerns are significantly reduced. Encryption enhances the security of both the client and server, and as a result, passwords, client access data, and any other sensitive information are protected from unauthorized access."
 
 ### 6. What is UFW?
 
-The Uncomplicated Firewall (UFW) is a user-friendly tool for modifying the firewall settings of a device without sacrificing security. It enables you to control incoming connections by specifying 
-which ports to open and which to block. This can be useful in combination with SSH, where you can set a specific port for it to use.
+The Uncomplicated Firewall (UFW) is a user-friendly tool for modifying the firewall settings of a device without sacrificing security. It enables you to control incoming connections by specifying which ports to open and which to block. This can be useful in combination with SSH, where you can set a specific port for it to use.
 
 ### 7. What is LVM?
-The Logical Volume Manager (LVM) is a software tool that enables users to manage partitions or logical volumes on a storage device with ease. LVM allows for the implementation of RAID technology 
-from partitions, presenting them to the operating system as new devices. To work, LVM assigns disks to one or more physical volumes, which must be partitioned as LVM type. LVM storage volumes can 
-be resized and relocated as needed, using the latest management tools.
+The Logical Volume Manager (LVM) is a software tool that enables users to manage partitions or logical volumes on a storage device with ease. To work, LVM assigns disks to one or more physical volumes, which must be partitioned as LVM type. LVM storage volumes can be resized and relocated as needed, using the latest management tools. In a nutshell, it offers administrators with a more versatile solution to manage disk space compared to traditional partitioning in order to simplify the task of balancing the storage demands of multiple users.
 
 ### 8. What is cron?
 
-A cron job, also known as cron, is a scheduling utility in the command line that allows commands or scripts to be executed at specified intervals or at a designated time each day. This tool is useful
-for tasks such as scheduling a server restart at a specific time daily.
-Some of it scripts are: the "monitoring.sh" script, which is a tool that displays messages on the terminal screens of all users who are currently logged in, searching for specific values and storing
-them as variables for display purposes; and the "sleep.sh" script, that calculates the amount of time that the virtual machine has been powered on, allowing the "monitoring.sh" message to be displayed 
-on the screen every 10 minutes since the system's startup.
+A cron job, also known as cron, is a scheduling utility in the command line that allows commands or scripts to be executed at specified intervals or at a designated time each day. This tool is useful for tasks such as scheduling a server restart at a specific time daily.
+
+Some of it scripts are: the "monitoring.sh" script, which is a tool that displays messages on the terminal screens of all users who are currently logged in, searching for specific values and storing them as variables for display purposes; and the "sleep.sh" script, that calculates the amount of time that the virtual machine has been powered on, allowing the "monitoring.sh" message to be displayed on the screen every 10 minutes since the system's startup.
 
 
 ## Installing and acessing the VM:
@@ -233,7 +237,9 @@ apt-get install vim -y
 
 
 
-### Intalling sudo:
+### Installing sudo:
+
+* The term "sudo" stands for "SuperUser DO" and is utilized to gain access to restricted files and actions. Linux, by default, limits access to crucial parts of the system to protect sensitive information from being endangered. The sudo command, however, temporarily elevates the user's privileges, enabling them to perform crucial tasks without logging in as the root user.
 
 1. First, we install sudo:
 ```
@@ -302,7 +308,7 @@ ssh "username"@"ip" -p 4242 or * ssh "username"@localhost -p 4242
 8. After that, we can just type `exit` to quit the connection if we want.
 
 
-### Setting up UFW(Uncomplicated Firewall)
+### Setting up UFW
 
 1. First, we need to install UFW:
 ```
@@ -350,6 +356,8 @@ is `at least 10 characters` in length, containing `an uppercase letter and a num
 * The password cannot include the `user's name`. 
 Note: This rule does not apply to the root password, but it must have a minimum of 7 non-repeated 
 characters from the previous password."
+
+	* The primary advantage of having strict password complexity guidelines is that they promote the creation of strong and distinct passwords, making them difficult to decipher. By increasing the number of mandatory requirements, the amount of potential combinations between letters, numbers, and symbols grows, enhancing password security.
 
 
 1. Use the editor to open the configuration file and make the changes:
@@ -407,7 +415,7 @@ sudo passwd "user" and sudo passwd "root"
 ```
 sudo apt-get install net-tools (install this tool first)
 cd /usr/local/bin/
-sudo vi /home/monitoring.sh (and copy the following lines of code inside of it)
+sudo vi monitoring.sh (and copy the following lines of code inside of it)
 ```
 ```
 #!/bin/bash
@@ -458,7 +466,7 @@ $sudo_commands_count -> the number of commands executed with the sudo program
 ```
 
 ```
-sudo chmod 777 /home/monitoring.sh // making it executable
+sudo chmod 777 monitoring.sh // making it executable
 ```
 
 2. Then, it is needed to make some changes:
@@ -486,12 +494,13 @@ sudo crontab -u root -e
 ```
 * And we add the following at the end:
 ```
+@reboot /usr/local/bin/monitoring.sh
 */10 * * * * /usr/local/bin/monitoring.sh
 ```
 
 4. We should then check the scheduled jobs:
 ```
-sudo crontab -u root -l
+sudo tab -u root -l
 ```
 
 
@@ -624,6 +633,184 @@ sudo vi /etc/network/interfaces
 ```
 sudo reboot
 ```
+
+
+### Before finishing your project:
+
+* Check the script is running every 10 minutes
+* Check my login with username
+* Check if password is requesting on Born2beroot
+* Check is password is following its strict rules
+* Make sure we are not running any graphical user interface (GUI)
+	
+	
+### Creating a signature.txt file:
+* First, we need to turn off our machine, and go to the terminal and type the following commands:
+```
+cd sgoinfree/<VM_directory>
+sha1sum "file".dvi
+```
+* Then we need to copy only the signature number inside this file, and create a nem one called "signature.txt", containing the VM signature's number.
+
+
+### For the evaluation:	
+
+
+* Check OS Debian: 
+```
+cat /etc/os-release | grep PRETTY_NAME
+```
+
+* Checking the partition scheme - comparing if its like the subject one:
+```
+lsblk
+```
+
+* Checking if sudo is installed properly:
+```
+dpkg -l | grep sudo
+```
+
+* Check if UFW service is properly installed and running: 
+```
+pdkg -l | grep ufw
+sudo ufw status 
+sudo ufw status | 4242
+sudo ufw status numbered
+sudo ufw delete $number // if you want to delete a rule
+```
+
+* Checking AppArmor status
+```
+sudo aa-status
+```
+
+* Check if SSH service is properly installed and running: 
+```
+dpkg -l | grep openssh-server
+sudo service ssh status
+```
+
+* Verifying that SSH only uses port 4242
+```
+sudo service ssh status | grep listening
+```
+
+* Logging in with SSH from the host machine:
+```
+ssh gubranco@localhost -p 4242
+```
+
+* We also have to make sure we cannot login in SSH with root user:
+```
+login root // we need to see the message "login: Cannot possibly work without effective root"
+
+```
+
+* Implementation of subject's rules:
+```
+vi /etc/sudoers.d/sudoconfig
+```
+
+* Check password expiry: 
+```
+vi /etc/login.defs // check lines 160/161
+```
+
+* Check password policy (and be able to explain how they were setup)
+```
+vi /etc/pam.d/common-password // check line 25
+```
+
+* Check that your user is a member of user42 group: 
+```
+groups "user"
+```
+
+* Check group user:
+```
+getent group sudo
+getent group "user42"
+```
+
+* Create a new user: 
+```
+sudo adduser "new_user"
+sudo chage -l "new_user" // verify password expire info
+```
+
+* Adding the new user to sudo group:
+```
+sudo adduser "new_user" sudo
+```
+
+* Create a group "evaluating", adds a new user to it and checks if the user belongs to the new group:
+```
+sudo addgroup "evaluating"
+sudo adduser "new_user" "evaluating"
+groups "new_user"
+```
+
+* Check the hostname of the machine (gubranco42): 
+```
+uname -n or hostname
+```
+
+* Modifying the hostname with the evaluator's login and reboot to confirm:
+```
+sudo adduser "new_user" sudo
+sudo login "new_user"
+sudo vi /etc/hostname // here we change to "new_user42"
+sudo reboot
+```
+
+* Restoring the original hostname:
+```
+sudo vi /etc/hostname // change it back to "gubranco42"
+sudo reboot
+```
+
+* Verifying /var/log/sudo/ exists and has a file (seq):
+```
+sudo ls /var/log/sudo/
+```
+
+* Verifying /var/log/sudo/ exists and has a file (seq):
+```
+sudo ls /var/log/sudo/
+```
+
+* Checking the files:
+```
+sudo ls /var/log/sudo/00/00
+sudo ls /var/log/sudo/00/00/<newfolder> 
+````
+````
+sudo cat /.../log # Input log
+sudo cat /.../ttyout # Output log
+````
+````
+sudo apt update
+sudo ls /var/log/sudo/00/00
+````
+
+* Changing the run of the script in cron (to every minute):
+```
+sudo crontab -e 
+add the line: "*/1 * * * * /usr/local/bin/monitoring.sh"
+```
+
+* To make the script stop running after we reboot without modifying it:
+```
+sudo crontab -e
+And we remove the lines "@reboot /usr/local/bin/monitoring.sh" and "*/1 * * * * /usr/local/bin/monitoring.sh"
+```
+
+That's it! :)
+
+### Here's more info on the subject:
+
+
 
 
 
