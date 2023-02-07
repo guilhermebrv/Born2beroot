@@ -21,19 +21,23 @@
 
 ### 1. Why should I use a Virtual Machine?
 	
-A virtual machine is a software emulation of a computer operating system, that allows you to run on a host machine multiple OS simultaneously on the same computer. 
+A `virtual machine` is a `software emulation of a computer operating system`, that allows you to `run on a host machine multiple OS simultaneously` on the same physical computer, since each VM has `its own operating system and functions` separately.
 
-Since each VM has its own operating system and functions separately, you can have more than one VM per machine. They are used to test out new software without affecting your current system, in a safe, separate environment. That way we also eliminate the need for multiple physical configurations of hardware, which can be costly to maintain and take up space. 
+They are used to `test out new software without affecting your current system`, in a safe, separate environment. That way we also `eliminate the need for multiple physical configurations of hardware`, which can be `costly` to maintain and `take up space`. 
 
+### 2. How does Oracle VirtualBox works?
 
-### 2. Why did I choose Debian?
-
-Besides being easier to install, when a new version is launched, updating Debian is much simpler compared to CentOS. Debian offers a user-friendly experience and supports a wide range of libraries, filesystems, and architecture, as well as providing more customization options. 
-
-That means Debian is so much better when we are talking about personal servers. On the other hand, for larger businesses, CentOS provides more features and unparalleled support for Enterprise software.
+`Oracle VirtualBox` is a `type 2 hypervisor`, which enables the `host computer` to `allocate its resources to the virtual machine`. The `hypervisor` is a `software program` that creates and manages virtual machines by `abstracting the hardware of a computer`, creating the idea of each virtual environment functioning as `its own separate computer`.
 
 
-### 3. What are the differences between APT and aptitude?
+### 3. Why did I choose Debian?
+
+Besides `being easier to install`, when a new version is launched, `updating Debian is much simpler compared to CentOS`. Debian offers a `user-friendly experience` and supports a `wide range of libraries, filesystems, and architecture`, as well as providing `more customization options`. 
+
+That means Debian is so much better when we are talking about `personal server`s. On the other hand, `for larger businesses`, `CentOS provides more features` and` unparalleled support for Enterprise software`.
+
+
+### 4. What are the differences between APT and aptitude?
 
 Both APT (Advanced Packaging Tool) and aptitude are tools for package management, used for searching, removing, and installing packages. However, they have different proposals.
 
@@ -46,7 +50,7 @@ On the other hand, aptitude is an interface created for APT that can show a list
 The most important difference between one and the other, is that aptitude is a high-level package manager, while APT is a lower-level package manager. Overall, aptitude has more integrated functionalities, which includes apt-mark and apt-cache, and handles even more tasks than apt.
 
 
-### 4. What is AppArmor?
+### 5. What is AppArmor?
 
 AppArmor is a Linux kernel security module, that comes with Debian, that restricts applications to a limited set of resources. It provides a mandatory access control (MAC) system that allows administrators to have more control, as it is possible for them to restrict the access of certain applications to the system. 
 
@@ -55,18 +59,21 @@ We can scheck its status by running:
 sudo aa-status
 ```
 
-### 5. What is SSH?
+### 6. What is SSH?
 
 "The Secure Shell (SSH) is a secure manner of connecting to a remote machine. It utilizes encryption to protect all communication between the client and the host, allowing users to access their servers more safely. This protocol is supported on Mac and Linux systems and can be accessed via the terminal. Unlike other remote communication methods, SSH encrypts the entire session, making it impossible for unauthorized parties to intercept sensitive information. By using the SSH protocol, security concerns are significantly reduced. Encryption enhances the security of both the client and server, and as a result, passwords, client access data, and any other sensitive information are protected from unauthorized access."
 
-### 6. What is UFW?
+### 7. What is UFW?
 
 The Uncomplicated Firewall (UFW) is a user-friendly tool for modifying the firewall settings of a device without sacrificing security. It enables you to control incoming connections by specifying which ports to open and which to block. This can be useful in combination with SSH, where you can set a specific port for it to use.
 
-### 7. What is LVM?
+### 8. What is a partition? And what is LVM?
+
+A partition is a portion of a hard disk, often referred to as a volume. Partitions can be either logical, which are created by dividing a physical disk into smaller pieces, or physical, which refer to the actual hard disk or SSD. A physical drive can have multiple logical partitions, each functioning as a separate drive. The terms "disk" and "drive" are often used interchangeably.
+
 The Logical Volume Manager (LVM) is a software tool that enables users to manage partitions or logical volumes on a storage device with ease. To work, LVM assigns disks to one or more physical volumes, which must be partitioned as LVM type. LVM storage volumes can be resized and relocated as needed, using the latest management tools. In a nutshell, it offers administrators with a more versatile solution to manage disk space compared to traditional partitioning in order to simplify the task of balancing the storage demands of multiple users.
 
-### 8. What is cron?
+### 9. What is cron?
 
 A cron job, also known as cron, is a scheduling utility in the command line that allows commands or scripts to be executed at specified intervals or at a designated time each day. This tool is useful for tasks such as scheduling a server restart at a specific time daily.
 
@@ -808,6 +815,21 @@ And we remove the lines "@reboot /usr/local/bin/monitoring.sh" and "*/1 * * * * 
 That's it! :)
 
 ### Here's more info on the subject:
+
+* Linux distributions:
+
+	* Debian is a well-respected Linux distribution that is appreciated for its easy-to-use interface, top-notch package management system, and exceptional stability. This OS is particularly favored for its strong security features, making it a go-to option for important infrastructure systems. However, this emphasis on security can sometimes result in slower release schedules, leaving users slightly behind in terms of updates. Unlike other Linux distributions, Debian does not have the support of a big corporation, meaning it lacks official support. Nevertheless, it is still considered a dependable and solid choice for those seeking a trustworthy Linux operating system.
+
+	* Ubuntu, which is derived from Debian, also employs the efficient apt package management system and offers a similar level of stability and dependability. Nevertheless, it is quicker in adapting to new releases, making it a suitable option for those who prefer to stay current with the latest software. Ubuntu is owned by Canonical, a large technology company based in the UK, and is commonly regarded as a Linux distribution that is user-friendly.
+
+* File system
+
+	* Encrypted volumes are a form of software that provides encryption services to protect data. Encryption is used as a layer of protection, and can be further strengthened with the use of a TPM (trusted platform module). Encrypted volumes provide file system level encryption that can be applied on demand to partitions or the entire hard drive.
+	* There is a distinction between partition encryption and whole disk encryption. Whole disk encryption encrypts all sections of the hard drive, while partition encryption is a more flexible way of encrypting data, allowing the user to access different encrypted partitions independently.
+Volume encryption allows multiple partitions, even those stored on different physical hard drives, to be combined into a single large logical unit called a volume. This provides users with the ability to store sensitive data more securely and achieve better performance.
+	* The Linux file system organizes data differently compared to a Windows computer. Instead of using drive letters to access various partitions, Linux stores all its data within the root file system, where everything is considered a file. The root user holds complete authority over the system. Hard drives can be mounted in specific directories, also known as mount points, which serve as access points to these drives. These mount points are essentially directories that connect to a new file system. The practice of obscuring the true nature of data through intentional complexity is known as obfuscation in computer science."
+	* "The Basic Input/Output System (BIOS) is a crucial component that performs an integrity check on the hardware to ensure its operability, including the keyboard and RAM. It operates independently of the operating system and runs automatically when the computer is turned on, booting the operating system. The BIOS then searches for the Master Boot Record (MBR), which is the first sector of the drive, and uses it to access the boot loader and partition information. This process can be facilitated by programs like LILO or GRUB, which load the kernel into memory. The kernel initialization represents the core of the operating system and holds complete control over it. In Linux, the systemd serves as the modern system and service manager, managing processes and mounting file systems."
+	* Hardware refers to the physical components that make up a computer. These components include transistors, which can either be turned on (represented by 1 in binary) or off (represented by 0 in binary). The pattern of bits used for representing higher concepts like letters and words is determined by encoding schemes like ASCII, which maps from decimal numbers to binary representations. The central processing unit (CPU) is the brain of the computer and is responsible for performing all computations. The CPU is connected to the motherboard, which is a circuit board made of silicon that contains sockets for components like the CPU. The more cores a CPU has, the more operations it can perform at a time, which results in greater computational power. Hyper-threading enables a CPU to address two virtual cores for each physical core, allowing it to perform more operations simultaneously. A system-on-a-chip is a single chip that includes multiple components and ports. Memory is connected to the motherboard and stores data when the computer is powered on. RAM (random access memory) is electronic and operates using electrons. To store long-term memory that persists even when the computer is powered off, a hard disk or flash memory (such as a solid-state drive) can be used. Peripheral devices are connected to the computer via ports and provide input/output functions. An operating system acts as the intermediary between hardware and software, and is responsible for coordinating the operation of hardware and software components. The operating system is loaded from disk to RAM when the computer is powered on and provides the interface for users to interact with the computer.
 
 
 
