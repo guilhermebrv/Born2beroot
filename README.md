@@ -384,10 +384,10 @@ sudo chage -l "username" -> to check the user settings
 3. Next, we should use the following commands:
 ```
 sudo apt install libpam-pwquality
-sudo vi /etc/security/pwquality.conf
+sudo vim /etc/pam.d/common-password
 ```
 
-* We need to add the following line to the end of the line containing `password requisite pam_pwquality.so retry=3)`:
+* We need to add the following line to the end of the line containing `password requisite pam_pwquality.so retry=3)` - we can put them side by side:
 ```
 minlen=10 // the minimum acceptable size for the new password
 ucredit=-1 // the maximum credit for having uppercase characters in the new password (if > 0, it is the minimum number of uppercase characters in the new password)
@@ -403,6 +403,7 @@ usercheck = 1 // prompts the user 1 time before returning an error
 4. We should then change our previous passwords, in order for them to match the new rules:
 ```
 sudo passwd "user" and sudo passwd "root"
+sudo reboot
 ```
 * If something goes wrong, you can alway "sudo reboot".
 
