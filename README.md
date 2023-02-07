@@ -332,17 +332,20 @@ sudo ufw status (numbered)
 ```
 sudo touch /etc/sudoers.d/sudoconfig
 sudo mkdir /var/log/sudo (for the log files)
+touch sudo.log
 sudo vi /etc/sudoers.d/sudoconfig
 ```
 
 * Inside the editor, we need to write:
 ```
-Defaults    passwd_tries=3
-Defaults    badpass_message="Wrong password, try again. You have only 3 attempts."
-Defaults    log_input,log_output
-Defaults    iolog_dir="/var/log/sudo"
-Defaults    requiretty
-Defaults    secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/bin:/sbin:/bin"
+Defaults	badpass_message="Password is wrong, please try again!"
+Defaults	passwd_tries=3
+Defaults	logfile="/var/log/sudo.log"
+Defaults	log_input, log_output
+Defaults	requiretty
 ```
   
 ### Password policy:
@@ -576,7 +579,7 @@ sudo mysql_secure_installation // in order to remove insecure default settings
 sudo systemctl restart mariadb
 ```
 
-* Next we log in to the MariaDB console:
+* Next we in to the MariaDB console:
 ```
 mysql -u root -p
 ```
