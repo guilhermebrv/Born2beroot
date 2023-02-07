@@ -779,11 +779,6 @@ sudo reboot
 sudo ls /var/log/sudo/
 ```
 
-* Verifying /var/log/sudo/ exists and has a file (seq):
-```
-sudo ls /var/log/sudo/
-```
-
 * Checking the files:
 ```
 sudo ls /var/log/sudo/00/00
